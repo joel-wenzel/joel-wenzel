@@ -1,0 +1,74 @@
+main {
+    width: 100vw;
+    height: 100vh;
+
+    background: linear-gradient(to left, #202020 30%, rgb(12, 12, 63) 30%);
+    background-size: cover;
+    color: white;
+}
+
+.heading {
+    width: 100%;
+    min-height: 200px;
+    background: inherit;
+    display: flex;
+    padding: 3em 5em;
+    
+}
+
+.flex {
+    flex-grow: 1;
+}
+
+a {
+    margin: 0;
+    padding: 2em;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: inherit;
+    color: #f0f0f0;
+    position: relative;
+
+    &:hover::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        height: 6px;
+        background: #f0f0f0;
+
+        animation: slideIn .1s linear forwards;
+    }
+}
+
+h1#backdrop {
+    color: #242424;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    padding: .2em 1.1em .2em .2em;
+    font-size: 6.4em;
+    transform: translateY(-50%);
+    z-index: 1;
+    backdrop-filter: blur(40px);
+    border: solid 2px transparent;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    background: rgba(255,255,255, .2);
+
+    border-radius: .1em 0 0 .1em;
+}
+
+.featured {
+    padding: 2em 6em;
+}
+
+@keyframes slideIn {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: calc(100% - 40px);
+    }
+}
