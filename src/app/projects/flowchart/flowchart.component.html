@@ -1,0 +1,192 @@
+<section>
+  <div class="content">
+    <div id="palette">
+      <div id="palette-heading">
+        <h2 id="palette-title">Palette</h2>
+        <span style="flex-grow: 1"></span>
+        <mat-icon>palette</mat-icon>
+      </div>
+      <div style="display: flex; flex-direction: column; margin: 1em 0">
+        <select
+          id="palette-select"
+          [(ngModel)]="selectedPalette"
+          (change)="onPaletteChange()"
+        >
+          <option *ngFor="let palette of palettes" [value]="palette.id">
+            {{ palette.name }}
+          </option>
+        </select>
+      </div>
+      <div
+        class="operation"
+        *ngFor="let op of operations"
+        [ngFlowchartStep]="op.template"
+        [ngFlowchartStepData]="op.data"
+      >
+        <mat-icon [ngStyle]="{ color: op.data.color }">{{ op.data.icon }}</mat-icon>
+        <h4>{{ op.data.name }}</h4>
+      </div>
+      <div class="links">
+        <a
+          class="link"
+          target="_blank"
+          href="https://github.com/joel-wenzel/ng-flowchart/tree/master/projects/ng-flowchart"
+        >
+          <mat-icon svgIcon="github"></mat-icon>
+          <span>Github</span>
+        </a>
+        <a
+          class="link"
+          target="_blank"
+          href="https://www.npmjs.com/package/@joelwenzel/ng-flowchart"
+        >
+          <mat-icon svgIcon="npm"></mat-icon>
+          <span>NPM</span>
+        </a>
+      </div>
+      <ng-template #routeTemplate let-data="data">
+        <div class="canvas-step" #step>
+          <div class="canvas-step-heading">
+            <mat-icon class="heading-icon" style="color: #00b894"
+              >alt_route</mat-icon
+            >
+            <span>Route</span>
+            <span style="font-weight: bold" *ngIf="data.route.name"
+              >: {{ data.route.name }}</span
+            >
+            <span style="flex-grow: 1"></span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu>
+              <button mat-menu-item (click)="onEditRoute(step.id)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit Route</span>
+              </button>
+              <button mat-menu-item (click)="onDeleteClicked(step.id, false)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item (click)="onDeleteClicked(step.id, true)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete Recursively</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #routerTemplate let-data="data">
+        <div class="canvas-step" #step>
+          <div class="canvas-step-heading">
+            <mat-icon class="heading-icon" [ngStyle]="{ color: data.color }">{{
+              data.icon
+            }}</mat-icon>
+            <span>{{ data.name }}</span>
+            <span style="flex-grow: 1"></span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu>
+              <button mat-menu-item (click)="onDeleteClicked(step.id, true)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete Recursively</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="canvas-step-content">
+            <button
+              mat-flat-button
+              style="background: #00b894; width: 100%"
+              (click)="onAddRoute(step.id)"
+            >
+              Add Route
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #standardTemplate let-data="data">
+        <div class="canvas-step" #step>
+          <div class="canvas-step-heading">
+            <mat-icon class="heading-icon" [ngStyle]="{ color: data.color }">{{
+              data.icon
+            }}</mat-icon>
+            <span>{{ data.name }}</span>
+            <span style="flex-grow: 1"></span>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu>
+              <button mat-menu-item (click)="onDeleteClicked(step.id, false)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+              <button mat-menu-item (click)="onDeleteClicked(step.id, true)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete Recursively</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="canvas-step-content">
+            <span>{{ data.content }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div
+      id="canvas"
+      ngFlowchartCanvas
+      [ngFlowchartCallbacks]="callbacks"
+      [ngFlowchartOptions]="options"
+    >
+      <div class="menu">
+        <h1 id="watermark">NgFlowchart</h1>
+        <div class="canvas-menu">
+          <button
+            mat-mini-fab
+            color="primary"
+            id="menu-btn"
+            (click)="showMenu = !showMenu"
+            aria-label="Example icon button with a menu icon"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+          <div
+            class="canvas-menu-options"
+            *ngIf="showMenu"
+            
+          >
+            <button
+              mat-mini-fab
+              color="green"
+              class="menu-option-btn"
+              matTooltip="Download Flow Source"
+              (click)="downloadSource(); showMenu = false"
+            >
+              <mat-icon>get_app</mat-icon>
+            </button>
+            <a
+              mat-mini-fab
+              color="blue"
+              class="menu-option-btn"
+              matTooltip="View on Stackblitz"
+              [href]="stackBlitzLink"
+              target="_blank"
+              
+            >
+              <mat-icon>code</mat-icon>
+          </a>
+            <button
+              mat-mini-fab
+              color="pink"
+              class="menu-option-btn"
+              matTooltip="Clear canvas"
+              (click)="clearCanvas(); showMenu = false"
+            >
+              <mat-icon>layers_clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
