@@ -4,27 +4,76 @@
       <div id="palette-heading">
         <h2 id="palette-title">Palette</h2>
         <span style="flex-grow: 1"></span>
-        <mat-icon>palette</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="settings">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <mat-menu #settings="matMenu">
+          <div class="sub-menu">
+            <button mat-menu-item (click)="toggleSequential()">
+              <mat-icon [class.active]="sequential">done</mat-icon>
+              Sequential
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="theme">Theme</button>
+            <button mat-menu-item [matMenuTriggerFor]="gap">Step Gap</button>
+          </div>
+        </mat-menu>
+        <mat-menu #theme="matMenu">
+          <div class="sub-menu">
+            <button mat-menu-item (click)="setTheme(0)">
+              <mat-icon [class.active]="activeTheme == 0">done</mat-icon>
+              Robin's Egg Blue
+            </button>
+            <button mat-menu-item (click)="setTheme(1)">
+              <mat-icon [class.active]="activeTheme == 1">done</mat-icon>
+              Mint Leaf
+            </button>
+            <button mat-menu-item (click)="setTheme(2)">
+              <mat-icon [class.active]="activeTheme == 2">done</mat-icon>
+              Exodus Fruit
+            </button>
+          </div>
+        </mat-menu>
+        <mat-menu #gap="matMenu">
+          <div class="sub-menu">
+            <button mat-menu-item (click)="setGap(20)">
+              <mat-icon [class.active]="stepGap == 20">done</mat-icon>
+              20px
+            </button>
+            <button mat-menu-item (click)="setGap(40)">
+              <mat-icon [class.active]="stepGap == 40">done</mat-icon>
+              40px
+            </button>
+            <button mat-menu-item (click)="setGap(60)">
+              <mat-icon [class.active]="stepGap == 60">done</mat-icon>
+              60px
+            </button>
+          </div>
+        </mat-menu>
       </div>
-      <div style="display: flex; flex-direction: column; margin: 1em 0">
-        <select
-          id="palette-select"
-          [(ngModel)]="selectedPalette"
-          (change)="onPaletteChange()"
+
+      <div class="operations-container">
+        <div style="display: flex; flex-direction: column">
+          <select
+            id="palette-select"
+            [(ngModel)]="selectedPalette"
+            (change)="onPaletteChange()"
+          >
+            <option *ngFor="let palette of palettes" [value]="palette.id">
+              {{ palette.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          class="operation"
+          *ngFor="let op of operations"
+          [ngFlowchartStep]="op.template"
+          [ngFlowchartStepData]="op.data"
         >
-          <option *ngFor="let palette of palettes" [value]="palette.id">
-            {{ palette.name }}
-          </option>
-        </select>
-      </div>
-      <div
-        class="operation"
-        *ngFor="let op of operations"
-        [ngFlowchartStep]="op.template"
-        [ngFlowchartStepData]="op.data"
-      >
-        <mat-icon [ngStyle]="{ color: op.data.color }">{{ op.data.icon }}</mat-icon>
-        <h4>{{ op.data.name }}</h4>
+          <mat-icon [ngStyle]="{ color: op.data.color }">{{
+            op.data.icon
+          }}</mat-icon>
+          <h4>{{ op.data.name }}</h4>
+        </div>
       </div>
       <div class="links">
         <a
@@ -150,11 +199,7 @@
           >
             <mat-icon>menu</mat-icon>
           </button>
-          <div
-            class="canvas-menu-options"
-            *ngIf="showMenu"
-            
-          >
+          <div class="canvas-menu-options" *ngIf="showMenu">
             <button
               mat-mini-fab
               color="green"
@@ -171,10 +216,9 @@
               matTooltip="View on Stackblitz"
               [href]="stackBlitzLink"
               target="_blank"
-              
             >
               <mat-icon>code</mat-icon>
-          </a>
+            </a>
             <button
               mat-mini-fab
               color="pink"

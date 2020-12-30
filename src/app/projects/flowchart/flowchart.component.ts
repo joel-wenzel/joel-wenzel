@@ -11,6 +11,27 @@ import { NgFlowchart, NgFlowchartCanvasDirective } from '@joelwenzel/ng-flowchar
 export class FlowchartComponent implements OnInit {
 
   selectedPalette = 'standard';
+  activeTheme = 0;
+  sequential = false;
+  stepGap = 40;
+
+  themes = [
+    {
+      connectors: '#00cec9',
+      dropIcon: '#00cec9',
+      dropIconBackground: '#46fffb'
+    },
+    {
+      connectors: '#00b894',
+      dropIcon: '#00b894',
+      dropIconBackground: 'white'
+    },
+    {
+      connectors: '#6c5ce7',
+      dropIcon: '#6c5ce7',
+      dropIconBackground: '#0b072d'
+    }
+  ]
 
   @ViewChild(NgFlowchartCanvasDirective)
   chart: NgFlowchartCanvasDirective;
@@ -32,8 +53,11 @@ export class FlowchartComponent implements OnInit {
   showMenu = false;
 
   callbacks: NgFlowchart.Callbacks;
+  options: NgFlowchart.Options = {
+    theme: this.themes[this.activeTheme]
+  }
 
-  options: NgFlowchart.Options = null;
+  
 
   constructor(private route: ActivatedRoute, private router: Router, private snackbar: MatSnackBar) { }
 
@@ -230,6 +254,31 @@ export class FlowchartComponent implements OnInit {
     element.click();
 
     document.body.removeChild(element);
+  }
+
+  setTheme(theme) {
+    this.activeTheme = theme;
+    this.options = {
+      ...this.options,
+      theme: this.themes[theme]
+    }
+    
+  }
+
+  setGap(gap) {
+    this.stepGap = gap;
+    this.options = {
+      ...this.options,
+      stepGap: gap
+    }
+  }
+
+  toggleSequential() {
+    this.sequential = !this.sequential;
+    this.options = {
+      ...this.options,
+      isSequential: this.sequential
+    }
   }
 
 }

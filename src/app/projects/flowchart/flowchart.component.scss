@@ -9,12 +9,99 @@ section {
     display: flex;
 }
 
+.sub-menu {
+    & mat-icon {
+        opacity: 0;
+        margin-right: 4px;
+
+        &.active {
+            opacity: 1;
+        }
+    }
+}
+
 div#palette {
     width: 240px;
     height: 100%;
     background: #343434;
     padding: 16px;
     position: relative;
+
+    & .option-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1em;
+
+        & label {
+            margin-bottom: .3em;
+        }
+    }
+
+    & .operations-container {
+        background: #444;
+        padding: .4em;
+        border-radius: 3px;
+        box-shadow: 3px 3px 18px 0px rgba(0,0,0,0.22);
+    }
+
+    & .options-container {
+        margin-bottom: 1em;
+        display: flex;
+        flex-direction: column;
+        background: #444;
+        padding: .4em;
+        border-radius: 3px;
+        box-shadow: 3px 3px 18px 0px rgba(0,0,0,0.22);
+    }
+
+    & .operation {
+        display: flex;
+        align-items: center;
+    
+        font-size: .95em;
+        padding: 0.5em 1em;
+        border-radius: 3px;
+        user-select: none;
+    
+        cursor: grab;
+    
+        & :not(:last-child) {
+            margin-right: 12px;
+        }
+    
+        & mat-icon {
+            font-size: 1.55em;
+            width: auto;
+            height: auto;
+        }
+    
+        &:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+    
+        & h4 {
+            margin: 0;
+        }
+    }
+}
+
+.links {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+
+    & a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+
+        & :not(:last-child) {
+            margin-right: 12px;
+        }
+    }
 }
 
 mat-icon.hidden {
@@ -33,35 +120,7 @@ mat-icon.hidden {
     background: #0984e3 !important;
 }
 
-div.operation {
-    display: flex;
-    align-items: center;
 
-    font-size: 1.1em;
-    padding: 0.5em 1em;
-    border-radius: 3px;
-    user-select: none;
-
-    cursor: grab;
-
-    & :not(:last-child) {
-        margin-right: 12px;
-    }
-
-    & mat-icon {
-        font-size: 1.55em;
-        width: auto;
-        height: auto;
-    }
-
-    &:hover {
-        background: rgba(0, 0, 0, 0.04);
-    }
-
-    & h4 {
-        margin: 0;
-    }
-}
 
 #help-icon {
     cursor: default;
@@ -89,24 +148,7 @@ div#canvas {
         linear-gradient(to bottom, #343434 1px, transparent 1px);
 }
 
-.links {
-    position: absolute;
-    bottom: 20px;
-    display: flex;
-    justify-content: space-around;
-    width: 80%;
 
-    & a {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: white;
-
-        & :not(:last-child) {
-            margin-right: 12px;
-        }
-    }
-}
 
 .canvas-step {
     background: #373737;
@@ -157,11 +199,13 @@ div#canvas {
     color: darkgrey;
 }
 
-#palette-select {
-    padding: 0.3em;
+select, input {
+    padding: 0.5em;
     background: #666;
     color: white;
     font-family: inherit;
+    outline: none;
+    border: none;
 }
 
 ::ng-deep.mat-snack-bar-container {
