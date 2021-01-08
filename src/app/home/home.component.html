@@ -1,12 +1,39 @@
-<section>
-    <div class="heading">
-        <span class="flex"></span>
-        <a routerLink="/projects">Projects</a>
-        <a href="#">Design</a>
-        <a href="#">Contact Me</a>
+<div class="home">
+  <mat-toolbar>
+    <h1>JW</h1>
+    <span style="flex-grow: 1"></span>
+    <a mat-button routerLink="/projects">Projects</a>
+    <a mat-button>Design</a>
+    <a mat-stroked-button href="#footer">Contact Me</a>
+  </mat-toolbar>
+  <section id="featured" class="first mat-typography">
+    <h2>Coming Soon</h2>
+  </section>
+  <section id="about-me" class="mat-typography">
+    <h2>About Me</h2>
+  </section>
+  <section id="footer" class="mat-typography">
+    <div class="marking">
+      <h1>JW</h1>
+      <span class="copyright">©2021 Joel Wenzel</span>
+    </div>
+
+    <div class="contact-info">
+      <a id="email" href="mailto:wenzje07@gmail.com">wenzje07@gmail.com</a>
+      <div>
+        <a class="link" target="_blank" href="https://github.com/joel-wenzel">
+          <mat-icon svgIcon="github"></mat-icon>
+          <span>Github</span>
+        </a>
+        <a
+          class="link"
+          target="_blank"
+          href="https://www.linkedin.com/in/joel-wenzel-335ab762/"
+        >
+          <mat-icon svgIcon="linkedin" style="color: #4883be"></mat-icon>
+          <span>LinkedIn</span>
+        </a>
       </div>
-      <div class="featured">
-        
-      </div>
-      <h1 id="backdrop">Joel Wenzel</h1>
-</section>
+    </div>
+  </section>
+</div>

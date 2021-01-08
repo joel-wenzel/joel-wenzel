@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "publish": "ng build --prod && firebase deploy",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -21,7 +22,7 @@
     "@angular/platform-browser": "~10.2.0",
     "@angular/platform-browser-dynamic": "~10.2.0",
     "@angular/router": "~10.2.0",
-    "@joelwenzel/ng-flowchart": "0.0.10",
+    "@joelwenzel/ng-flowchart": "^0.1.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

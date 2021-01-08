@@ -1,67 +1,96 @@
-
-
-.heading {
+div.home {
     width: 100%;
-    min-height: 200px;
-    background: inherit;
-    display: flex;
-    padding: 3em 5em;
-    
-}
 
-.flex {
-    flex-grow: 1;
-}
-
-a {
-    margin: 0;
-    padding: 2em;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-family: inherit;
-    color: #f0f0f0;
-    position: relative;
-
-    &:hover::after {
-        content: "";
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        height: 6px;
+    & section:nth-child(odd) {
         background: #f0f0f0;
-
-        animation: slideIn .1s linear forwards;
     }
 }
 
-h1#backdrop {
-    color: #242424;
-    position: fixed;
-    right: 0;
-    top: 50%;
-    padding: .2em 1em .2em .2em;
-    font-size: 6.4em;
-    transform: translateY(-50%);
-    z-index: 1;
-    backdrop-filter: blur(40px);
-    border: solid 2px transparent;
-    background-clip: padding-box;
-    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    background: rgba(255,255,255, .2);
-
-    border-radius: .1em 0 0 .1em;
+h1 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.7em;
+    color: #55efc4;
 }
 
-.featured {
-    padding: 2em 6em;
+mat-toolbar {
+   
+    & a {
+        margin: 0 1em;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 1px;
+    }
 }
 
-@keyframes slideIn {
-    0% {
-        width: 0;
+section#about-me {
+    display: grid;
+    place-items: center;
+}
+
+section#featured {
+    display: grid;
+    place-items: center;
+    color: white;
+}
+
+section {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    &.first {
+        height: calc(100vh - 64px);
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../assets/images/background2.jpg");
+        background-size: cover;
     }
-    100% {
-        width: calc(100% - 40px);
+
+    &#footer {
+        position: relative;
+        flex-direction: row;
+        justify-content: space-between;
+        & h1 {
+            font-size: 6.5em;
+            
+        }
+        height: 300px;
+        background: #212121;
+
+        & .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3em 10em;
+        }
+
+        & .marking {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 18em;
+        }
     }
+}
+
+#email {
+    font-size: 2em;
+    color: white;
+    margin-bottom: 1em;
+    text-decoration: none;
+}
+.link {
+    font-size: 1.6em;
+
+    & mat-icon {
+        height: auto;
+        width: 36px;
+    }
+}
+
+.copyright {
+    margin-top: 1em;
+    font-size: 1.2em;
+    color: darkgrey;
 }

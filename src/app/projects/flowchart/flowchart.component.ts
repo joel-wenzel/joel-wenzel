@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgFlowchart, NgFlowchartCanvasDirective } from '@joelwenzel/ng-flowchart';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgFlowchart, NgFlowchartCanvasDirective, NgFlowchartStepRegistry } from '@joelwenzel/ng-flowchart';
+import { RouterStepComponent } from './router-step/router-step.component';
+import { StandardStepComponent } from './standard-step/standard-step.component';
 
 @Component({
   selector: 'app-flowchart',
@@ -10,231 +10,134 @@ import { NgFlowchart, NgFlowchartCanvasDirective } from '@joelwenzel/ng-flowchar
 })
 export class FlowchartComponent implements OnInit {
 
-  selectedPalette = 'standard';
-  activeTheme = 0;
-  sequential = false;
-  stepGap = 40;
-
-  themes = [
-    {
-      connectors: '#00cec9',
-      dropIcon: '#00cec9',
-      dropIconBackground: '#46fffb'
-    },
-    {
-      connectors: '#00b894',
-      dropIcon: '#00b894',
-      dropIconBackground: 'white'
-    },
-    {
-      connectors: '#6c5ce7',
-      dropIcon: '#6c5ce7',
-      dropIconBackground: '#0b072d'
-    }
-  ]
-
   @ViewChild(NgFlowchartCanvasDirective)
   chart: NgFlowchartCanvasDirective;
 
-  @ViewChild('standardTemplate', { static: true })
-  standardTemplate: TemplateRef<any>;
 
-  @ViewChild('routerTemplate', { static: true })
-  routerTemplate: TemplateRef<any>;
+  options: NgFlowchart.Options = new NgFlowchart.Options();
 
-  @ViewChild('routeTemplate')
-  routeTemplate: TemplateRef<any>;
+  uploadSample = '{"root":{"id":"s1610071839395","type":"router","data":{"name":"Router","icon":"router","color":"#3498db"},"children":[{"id":"s1610071842234","type":"route","data":{"name":"Route","icon":"alt_route","color":"#2980b9","config":[{"name":"Route Expression","description":"Javascript route expression","type":"text","value":"!!payload?.orders"}]},"children":[{"id":"s1610071904557","type":"assign","data":{"name":"Variable","icon":"calculate","color":"#00b894","config":[{"name":"Variable Name","description":"The name of the new or existing variable","type":"text","value":"myOrders"},{"name":"Value","description":"Javascript expression for the value","type":"text","value":"payload.orders.filter(order => order.ownerId == 123)"}]},"children":[{"id":"s1610071954438","type":"execute","data":{"name":"Execute","icon":"code","color":"#e17055","config":[{"name":"Snippet","description":"Javascript snippet to execute","type":"textarea","value":"//do some cool stuff"}]},"children":[]}]},{"id":"s1610072459400","type":"notification","data":{"name":"Notification","icon":"notifications","color":"#e84393","config":[{"name":"Email To","description":"Recipients of the notification","type":"text"},{"name":"Subject","description":"Subject of the notification","type":"text"},{"name":"Body","description":"Message body content","type":"textarea"}]},"children":[]}]},{"id":"s1610071842634","type":"route","data":{"name":"Route","icon":"alt_route","color":"#2980b9","config":[{"name":"Route Expression","description":"Javascript route expression","type":"text","value":"!payload || !payload.orders"}]},"children":[{"id":"s1610071885134","type":"notification","data":{"name":"Notification","icon":"notifications","color":"#e84393","config":[{"name":"Email To","description":"Recipients of the notification","type":"text","value":"wenzje07@gmail.com"},{"name":"Subject","description":"Subject of the notification","type":"text","value":"Invalid payload"},{"name":"Body","description":"Message body content","type":"textarea","value":"No orders found on payload"}]},"children":[]}]}]}}';
 
-  palettes = [
+  operations = [
+    {
+      name: 'Assign',
+      type: 'assign',
+      data: {
+        name: 'Variable',
+        icon: 'calculate',
+        color: '#00b894',
+        config: [
+          {
+            name: 'Variable Name',
+            description: 'The name of the new or existing variable',
+            type: 'text'
+          },
+          {
+            name: 'Value',
+            description: 'Javascript expression for the value',
+            type: 'text'
+          }
+        ]
+      },
+      template: StandardStepComponent
+    },
+    {
+      name: 'Execute',
+      type: 'execute',
+      data: {
+        name: 'Execute',
+        icon: 'code',
+        color: '#e17055',
+        config: [
+          {
+            name: 'Snippet',
+            description: 'Javascript snippet to execute',
+            type: 'textarea',
+            value: 'payload.filter(order => order.owner == \'me\')'
+          }
+        ]
+      },
+      template: StandardStepComponent
+    },
+    {
+      name: 'Notification',
+      type: 'notification',
+      data: {
+        name: 'Notification',
+        icon: 'notifications',
+        color: '#e84393',
+        config: [
+          {
+            name: 'Email To',
+            description: 'Recipients of the notification',
+            type: 'text'
+          },
+          {
+            name: 'Subject',
+            description: 'Subject of the notification',
+            type: 'text'
+          },
+          {
+            name: 'Body',
+            description: 'Message body content',
+            type: 'textarea'
+          }
+        ]
+      },
+      
+      template: StandardStepComponent
+    },
+    {
+      name: 'Router',
+      type: 'router',
+      data: {
+        name: 'Router',
+        icon: 'router',
+        color: '#3498db'
+      },
+      
+      template: RouterStepComponent
+    }
   ]
-
-  operations = [];
 
   showMenu = false;
 
-  callbacks: NgFlowchart.Callbacks;
-  options: NgFlowchart.Options = {
-    theme: this.themes[this.activeTheme]
-  }
 
-  
-
-  constructor(private route: ActivatedRoute, private router: Router, private snackbar: MatSnackBar) { }
+  constructor(
+    private registry: NgFlowchartStepRegistry
+    ) { }
 
   ngOnInit(): void {
-    this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        let param = params['palette'] || 'standard';
-        this.selectedPalette = param;
-      });
-
-    this.callbacks = {
-      canAddStep: this.canAddStep.bind(this)
-    }
+    this.operations.forEach(op => {
+      this.registry.registerStep(op.type, op.template);
+    });
+    this.registry.registerStep('route', StandardStepComponent);
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.palettes = [
-        {
-          id: 'standard',
-          name: 'Standard',
-          enabled: true,
-          stackBlitz: 'https://stackblitz.com/edit/ng-flowchart-standard?file=src/app/app.component.html',
-          operations: [
-            {
-              data: {
-                name: 'Filter',
-                icon: 'filter_alt',
-                color: '#e17055',
-                content: 'Only todays orders'
-              },
-              template: this.standardTemplate
-            },
-            {
-              data: {
-                name: 'Variable',
-                icon: 'calculate',
-                color: '#00b894',
-                content: 'Current date',
-              },
-
-              template: this.standardTemplate
-            },
-            {
-              data: {
-                name: 'Map',
-                icon: 'translate',
-                color: '#00cec9',
-                content: 'Convert format',
-              },
-
-              template: this.standardTemplate
-            },
-            {
-              data: {
-                name: 'Rest',
-                icon: 'calculate',
-                color: '#ffeaa7',
-                content: 'POST - Payload',
-              },
-
-              template: this.standardTemplate
-            },
-            {
-              data: {
-                name: 'Notify',
-                icon: 'notifications',
-                color: '#e84393',
-                content: 'Dev Team',
-              },
-
-              template: this.standardTemplate
-            }
-          ]
-        },
-
-        {
-          id: 'customrouting',
-          name: 'Custom Routing',
-          enabled: true,
-          stackBlitz: 'https://stackblitz.com/edit/ng-flowchart-customrouting?file=src/app/app.component.html',
-          operations: [
-            {
-              data: {
-                name: 'Router',
-                icon: 'mediation',
-                color: '#a29bfe',
-              },
-
-              template: this.routerTemplate
-            },
-            {
-              data: {
-                name: 'Some Action',
-                icon: 'build',
-                color: '#fdcb6e',
-                content: 'Do Something',
-              },
-
-              template: this.standardTemplate
-            },
-          ]
-        }
-
-      ];
-      this.onPaletteChange();
-    })
-
+   
   }
 
-  canAddStep(dropCandidate: NgFlowchart.DropEvent) {
-    if (dropCandidate.adjacent?.getData().name == 'Router' && dropCandidate.position == 'BELOW') {
-      if (dropCandidate.step.getData().name !== 'Route') {
-        this.snackbar.open('Only Route steps can be children of the Router. Click the "Add Route" button', null, {
-          duration: 5000
-        });
-        return false;
-      }
-    }
-    return true;
-  }
 
-  onDeleteClicked(id: string, recursive: boolean = false) {
-    this.chart.getFlow().getStep(id).delete(recursive);
-  }
 
   get stackBlitzLink() {
-    return this.palettes.find(pal => pal.id === this.selectedPalette).stackBlitz;
+    return null;
   }
 
-  onPaletteChange() {
-    const palette = this.palettes.find(pal => pal.id == this.selectedPalette);
-    this.operations = palette.operations;
-    this.router.navigate([],
-      {
-        relativeTo: this.route,
-        queryParams: {
-          palette: this.selectedPalette
-        },
-        queryParamsHandling: 'merge', // remove to replace all query params by provided
-      });
-
-    if (this.chart.getFlow().getRoot()) {
-      this.chart.getFlow().clear();
-    }
 
 
+  downloadFlow() {
 
+    let json = this.chart.getFlow().toJSON(4);
+    var x = window.open();
+    x.document.open();
+    x.document.write('<html><head><title>Flowchart Json</title></head><body><pre>' + json + '</pre></body></html>');
+    x.document.close();
 
   }
 
-  onAddRoute(id) {
-    this.chart.getFlow().getStep(id).addChild(this.routeTemplate, {
-      asSibling: true,
-      data: {
-        name: 'Route',
-        route: {
-          name: null,
-          condition: null
-        }
-
-      }
-    })
-  }
-
-  onEditRoute(id) {
-    let routeData = this.chart.getFlow().getStep(id).getData();
-    let dateStr = (Date.now() + "");
-    routeData.route.name = dateStr.substr(dateStr.length - 4, 4);
-  }
-
-  downloadSource() {
-    let json = this.chart.getFlowJSON();
-
-    this.download('FlowSource.json', json);
+  uploadFlow() {
+    this.chart.getFlow().upload(this.uploadSample);
   }
 
   clearCanvas() {
@@ -243,42 +146,21 @@ export class FlowchartComponent implements OnInit {
     }
   }
 
-  download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
+  onGapChanged(event) {
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-  }
-
-  setTheme(theme) {
-    this.activeTheme = theme;
     this.options = {
       ...this.options,
-      theme: this.themes[theme]
-    }
-    
+      stepGap: parseInt(event.target.value)
+    };
   }
 
-  setGap(gap) {
-    this.stepGap = gap;
+  onSequentialChange(event) {
     this.options = {
       ...this.options,
-      stepGap: gap
+      isSequential: event.target.checked
     }
   }
 
-  toggleSequential() {
-    this.sequential = !this.sequential;
-    this.options = {
-      ...this.options,
-      isSequential: this.sequential
-    }
-  }
+
 
 }
