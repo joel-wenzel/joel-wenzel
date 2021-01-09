@@ -7,7 +7,35 @@
     <a mat-stroked-button href="#footer">Contact Me</a>
   </mat-toolbar>
   <section id="featured" class="first mat-typography">
-    <h2>Coming Soon</h2>
+    <div class="featured-header">
+      <h1>Featured</h1>
+      <h2>NgFlowchart</h2>
+    </div>
+
+    <div class="featured-content">
+      <div class="featured-video">
+        <video [muted]="true" autoplay playsinline loop style="height: 300px">
+          <source src="assets/ng-flowchart.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <span style="flex-grow: 1"></span>
+      <div class="featured-info">
+        <p class="featured-description">
+          A free lightweight Angular Library for building drag and drop flow charts.
+          <br />Chart behavior and steps are customizable. Data can be exported
+          or uploaded in json format.
+        </p>
+        <div style="display: flex">
+          <a mat-flat-button id="github-btn" href="#" style="margin-right: 16px">
+            <mat-icon svgIcon="github" style="margin-right: 12px"></mat-icon>
+            <span>GitHub</span>
+          </a>
+          <button mat-flat-button color="primary" routerLink="/projects/flowchart">Try Demo</button>
+        </div>
+      </div>
+      <span style="flex-grow: 1"></span>
+    </div>
   </section>
   <section id="about-me" class="mat-typography">
     <h2>About Me</h2>

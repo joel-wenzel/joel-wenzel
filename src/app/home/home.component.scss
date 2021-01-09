@@ -13,7 +13,6 @@ h1 {
 }
 
 mat-toolbar {
-   
     & a {
         margin: 0 1em;
         text-transform: uppercase;
@@ -22,15 +21,53 @@ mat-toolbar {
     }
 }
 
+
 section#about-me {
     display: grid;
     place-items: center;
 }
 
 section#featured {
-    display: grid;
-    place-items: center;
     color: white;
+
+    & .featured-header {
+        margin: 3em 0 0 6em;
+
+        & h1 {
+            font-family: Roboto, "Poppins", sans-serif;
+            font-size: 2em;
+            color: #aaa8a8;
+        }
+
+        & h2 {
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+    }
+
+    & .featured-content {
+        display: flex;
+        flex-direction: row;
+
+        margin: 6em;
+    }
+
+    & .featured-info {
+        margin: 2em 0 0 4em;
+        display: flex;
+        flex-direction: column;
+
+        & p {
+            font-size: 1.3em;
+            line-height: 1.6em;
+            color: #f0f0f0;
+        }
+    }
+}
+
+#github-btn {
+    background-color: #f0f0f0;
+    color: black;
 }
 
 section {
@@ -53,7 +90,6 @@ section {
         justify-content: space-between;
         & h1 {
             font-size: 6.5em;
-            
         }
         height: 300px;
         background: #212121;
