@@ -12,7 +12,10 @@
     "dev:ssr": "ng run joel-wenzel:serve-ssr",
     "serve:ssr": "node dist/joel-wenzel/server/main.js",
     "build:ssr": "ng build --prod && ng run joel-wenzel:server:production",
-    "prerender": "ng run joel-wenzel:prerender"
+    "prerender": "ng run joel-wenzel:prerender",
+    "build:functions": "npm run --prefix functions build",
+    "serve:site": "npm run --prefix functions serve",
+    "build:all": "npm run build:ssr && npm run build:functions"
   },
   "private": true,
   "dependencies": {

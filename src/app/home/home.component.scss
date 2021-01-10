@@ -21,10 +21,24 @@ mat-toolbar {
     }
 }
 
+.about-container {
+    padding-left: 6em;
+    margin-left: 2em;
+}
 
+.about-text {
+    font-size: 2em;
+    line-height: 2.2em;
+    border-top: 5px solid lightgrey;
+    border-bottom: 5px solid lightgrey;
+    padding: 1em 0;
+}
 section#about-me {
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6em;
 }
 
 section#featured {
@@ -70,13 +84,31 @@ section#featured {
     color: black;
 }
 
+.image-container {
+    padding: 1em;
+    background: #10ac80;
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 51% 100%, 0 100%);
+    margin-bottom: 3em;
+}
+
+.image-inner-container {
+    background: #f0f0f0;
+    padding: 1em;
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 51% 99%, 0 99%);
+}
+
+#personal-image {
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 100%);
+}
+
+
 section {
     height: 100vh;
 
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &.first {
         height: calc(100vh - 64px);
@@ -118,6 +150,7 @@ section {
 }
 .link {
     font-size: 1.6em;
+    margin-bottom: 1em;
 
     & mat-icon {
         height: auto;

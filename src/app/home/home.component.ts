@@ -13,10 +13,11 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('Joel Wenzel');
     this.meta.addTags([
-      { name: 'og.url', content: '/home'},
-      { name: 'og.title', content: 'Joel Wenzel'},
-      { name: 'og.description', content: 'lorem'},
-      { name: 'og.image', content: '/home'},
+      { name: 'twitter:card', content: 'summary'},
+      { name: 'og:url', content: '/home'},
+      { name: 'og:title', content: 'Joel Wenzel'},
+      { name: 'og:description', content: 'Professional full stack software engineer.'},
+      { name: 'og:image', content: 'assets/images/joel-wenzel.jpg'}
     ])
   }
 
