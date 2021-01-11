@@ -54,36 +54,35 @@
     <div class="image-container">
       <div class="image-inner-container">
         <img
-          src="assets/images/joel-wenzel.jpg"
-          alt="Joel Wenzel"
+          [src]="about.image"
+          [alt]="about.name"
           id="personal-image"
         />
       </div>
     </div>
     <div class="about-container">
       <p class="about-text">
-        An accomplished full stack software engineer from Titletown, USA. Plays
-        in the DevOps space by day and front end development by night.
+        {{about.desc}}
       </p>
     </div>
   </section>
   <section id="footer" class="mat-typography">
     <div class="marking">
       <h1>JW</h1>
-      <span class="copyright">©2021 Joel Wenzel</span>
+      <span class="copyright">©2021 {{about.name}}</span>
     </div>
 
     <div class="contact-info">
-      <a id="email" href="mailto:wenzje07@gmail.com">wenzje07@gmail.com</a>
+      <a id="email" [href]="'mailto:'+about.email">{{about.email}}</a>
       <div>
-        <a class="link" target="_blank" href="https://github.com/joel-wenzel">
+        <a class="link" target="_blank" [href]="links.github">
           <mat-icon svgIcon="github"></mat-icon>
           <span>Github</span>
         </a>
         <a
           class="link"
           target="_blank"
-          href="https://www.linkedin.com/in/joel-wenzel-335ab762/"
+          [href]="links.linkedIn"
         >
           <mat-icon svgIcon="linkedin" style="color: #4883be"></mat-icon>
           <span>LinkedIn</span>

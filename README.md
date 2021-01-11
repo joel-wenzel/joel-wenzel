@@ -1,6 +1,6 @@
 # Joel Wenzel
 
-Drop a follow to see what Morbo the Annihilator is up to. 
+An accomplished full stack software engineer from Titletown, USA. Plays in the DevOps space by day and front end development by night.
 
 ## My Projects
 - ### **Ng Flowchart**
